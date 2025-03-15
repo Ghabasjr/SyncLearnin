@@ -1,6 +1,6 @@
 import {
     fetchAuthWrapper,
-    cancelTokenSources,
+    abortControllers,
     fetchBaseWrapper,
     fetchFormWrapper
 } from "../../src/fetchWrapper/fetchwrapper";
@@ -67,8 +67,8 @@ export const authService = {
 
     logout: async () => {
         try {
-            cancelTokenSources.forEach((source) => source.cancel("Logout initiated"));
-            cancelTokenSources.length = 0;
+            abortControllers.forEach((controller) => controller.abort());
+            abortControllers.length = 0;
 
             localStorage.removeItem("isDefault");
             localStorage.removeItem("useSelection");
@@ -82,7 +82,7 @@ export const authService = {
 
     signup: async (payload: any) => {
         try {
-            const response = await fetchFormWrapper.post("/auth/user/sign-up", payload);
+            const response = await fetchFormWrapper.post("/signup", payload);
             return response?.data;
         } catch (error) {
             // console.log(error, "error");

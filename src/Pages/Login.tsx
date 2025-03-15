@@ -47,7 +47,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row min-h-screen w-full">
+        <div className="flex flex-col md:flex-row min-h-screen w-full p-4">
             {/* Left Side - Only Visible on Medium Screens & Up */}
             <div className="hidden md:flex w-1/2 h-full flex-col justify-center items-center bg-[#23CE6B] p-10 text-white">
                 <div className="flex flex-col items-center space-y-4">
