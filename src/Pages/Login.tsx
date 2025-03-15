@@ -2,10 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { useLoginMutation } from "../api/use-auth";
 
 const Login = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const loginMutation = useLoginMutation();
 
     // Validation schema using Yup
     const validationSchema = Yup.object({
@@ -18,47 +21,60 @@ const Login = () => {
     });
 
     // Handle form submission
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values: any, { setSubmitting }) => {
         setIsLoading(true);
-        setTimeout(() => {
-            console.log("Form values:", values);
-            setIsLoading(false);
-            setSubmitting(false);
-            navigate("/otppage"); // Navigate to OTP page
-        }, 2000); // Simulating API request
+        loginMutation.mutate(values, {
+            onSuccess: (response) => {
+                console.log("Login successful:", response);
+                if (response?.success && response?.message === "Login successful") {
+                    toast.success(response?.message);
+                    sessionStorage.setItem("token", response?.data?.token);
+                    sessionStorage.setItem("user", JSON.stringify(response?.data?.user));
+                    navigate("/dashboard");
+                } else {
+                    toast.error(response?.message || "Login failed");
+                }
+            },
+            onError: (error) => {
+                console.error("Login failed:", error);
+                toast.error("Login failed. Please check your credentials.");
+            },
+            onSettled: () => {
+                setIsLoading(false);
+                setSubmitting(false);
+            },
+        });
     };
 
     return (
-        <div className="flex min-h-screen w-full">
-            {/* Left Side - Form */}
-            <div className="hidden w-1/2 mt-10 rounded-sm h-full md:flex flex-col justify-center items-center bg-[#23CE6B] p-10 text-center text-white">
-                {/* Image Section */}
-                <img className="filter invert" src="/SyncLearn.svg" alt="SyncLearn logo" />
-
-                <div className="flex flex-col space-y-4 items-center mt-60">
-                    <h1 className="text-2xl font-bold">Kick Start Your Learning Journey with our Top Courses</h1>
-                    <p className="text-sm font-medium">Take charge of your future with courses designed to help students succeed!
-                        Whether you're preparing for exams, exploring new subjects,
-                        or building skills for your dream career, our expert-led programs make
-                        learning engaging and effective.
-                        Start today and unlock endless opportunities!</p>
+        <div className="flex flex-col md:flex-row min-h-screen w-full">
+            {/* Left Side - Only Visible on Medium Screens & Up */}
+            <div className="hidden md:flex w-1/2 h-full flex-col justify-center items-center bg-[#23CE6B] p-10 text-white">
+                <div className="flex flex-col items-center space-y-4">
+                    <img src="/Group 1516.svg" alt="Logo" />
+                    <img className="filter invert" src="/SyncLearn.svg" alt="SyncLearn logo" />
                 </div>
 
                 {/* Text Section */}
-                <div className="max-w-lg flex flex-col items-center space-y-6"></div>
+                <div className="flex flex-col items-center text-center mt-10 space-y-4">
+                    <h1 className="text-2xl font-bold">
+                        Kick Start Your Learning Journey with our Top Courses
+                    </h1>
+                    <p className="text-sm font-medium">
+                        Take charge of your future with courses designed to help students succeed!
+                        Whether you're preparing for exams, exploring new subjects, or building skills
+                        for your dream career, our expert-led programs make learning engaging and effective.
+                        Start today and unlock endless opportunities!
+                    </p>
+                </div>
             </div>
 
-            {/* Right Side - Image & Text */}
-            <div className="w-1/2 h-full mt-10 flex flex-col justify-center items-center p-10 bg-white">
+            {/* Right Side - Form Section */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
                 <h1 className="text-3xl font-semibold text-black mb-6">Welcome Back</h1>
 
                 <Formik
-                    initialValues={{
-                        username: "",
-                        email: "",
-                        password: "",
-                        confirmPassword: "",
-                    }}
+                    initialValues={{ email: "", password: "" }}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
@@ -70,7 +86,7 @@ const Login = () => {
                                     type="email"
                                     name="email"
                                     placeholder="Email"
-                                    className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2"
+                                    className="w-full bg-gray-100 rounded-xl p-3 border focus:outline-none focus:ring-2 focus:ring-green-400"
                                 />
                                 <ErrorMessage
                                     name="email"
@@ -85,7 +101,7 @@ const Login = () => {
                                     type="password"
                                     name="password"
                                     placeholder="Password"
-                                    className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2"
+                                    className="w-full bg-gray-100 rounded-xl p-3 border focus:outline-none focus:ring-2 focus:ring-green-400"
                                 />
                                 <ErrorMessage
                                     name="password"
@@ -94,23 +110,31 @@ const Login = () => {
                                 />
                             </div>
 
-                            <div><a href="forgotpassword">Forgot Password</a></div>
+                            {/* Forgot Password Link */}
+                            <div className="text-right">
+                                <a href="forgotpassword" className="text-green-600 hover:underline">Forgot Password?</a>
+                            </div>
 
                             {/* Submit Button with Spinner */}
                             <button
                                 type="submit"
                                 disabled={isSubmitting || isLoading}
-                                className="btn btn-success bg-[#23CE6B] w-full rounded-xl text-black flex justify-center items-center p-2"
+                                className="w-full bg-[#23CE6B] text-white rounded-xl p-3 font-semibold hover:bg-green-600 flex justify-center items-center"
                             >
                                 {isLoading ? <span className="loading loading-spinner"></span> : "Log In"}
                             </button>
                         </Form>
                     )}
                 </Formik>
-                <div className="flex mt-4 items-start justify-start">
-                    Don't have an account? <a href="signup">Sign Up</a>
+
+                {/* Sign Up Link */}
+                <div className="mt-4 text-center">
+                    <span className="text-gray-600">Don't have an account? </span>
+                    <a href="signup" className="text-green-600 font-semibold hover:underline">Sign Up</a>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     );
 };

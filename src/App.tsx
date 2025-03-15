@@ -7,7 +7,7 @@ import OtpPage from './Pages/OtpPage/OtpPage'
 import DashBoard from './Pages/DashBoard/DashBoard'
 import Login from './Pages/Login'
 import ForgotPassword from './Pages/ForgotPassword'
-// import { AuthProvider } from './Context/AuthContext/AuthContext'
+import { AuthProvider } from './Context/AuthContext/AuthContext'
 
 function App() {
 
@@ -15,17 +15,17 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <AuthProvider> */}
-        <Routes>
-          <Route path='/' element={<LandingPage />} />
-          <Route path='/studenttutor' element={<StudentTutor />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/otppage' element={<OtpPage />} />
-          <Route path='/dashboard' element={<DashBoard />} />
-          <Route path='/forgotpassword' element={<ForgotPassword />} />
-        </Routes>
-        {/* </AuthProvider> */}
+        <AuthProvider>
+          <Routes>
+            <Route path='/' element={<LandingPage />} />
+            <Route path='/studenttutor' element={<StudentTutor />} />
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/otppage' element={<OtpPage />} />
+            <Route path='/dashboard' element={<DashBoard />} />
+            <Route path='/forgotpassword' element={<ForgotPassword />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </>
   )
