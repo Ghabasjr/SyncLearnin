@@ -5,6 +5,35 @@ import { useState } from "react";
 import { useSignUpMutation } from "../api/use-auth";
 import { toast } from "react-toastify";
 
+// Nigerian States and Cities
+const nigerianStates = {
+    "Lagos": ["Ikeja", "Surulere", "Yaba", "Victoria Island"],
+    "Abuja": ["Garki", "Maitama", "Wuse"],
+    "Kano": ["Kano Municipal", "Fagge", "Tarauni", "Nassarawa"],
+    "Ogun": ["Abeokuta", "Sagamu", "Ijebu-Ode", "Ilaro"],
+    "Yobe": ["Damaturu", "Potiskum", "Gashua", "Nguru"],
+    "Borno": ["Maiduguri", "Jere", "Monguno", "Bama"],
+    "Kaduna": ["Kaduna North", "Kaduna South", "Zaria", "Kafanchan"],
+    "Adamawa": ["Yola", "Mubi", "Numan", "Jimeta"],
+    "Bauchi": ["Bauchi", "Azare", "Misau", "Katagum"],
+    "Jigawa": ["Dutse", "Hadejia", "Birnin Kudu", "Gumel"],
+    "Katsina": ["Katsina", "Funtua", "Daura", "Malumfashi"],
+    "Kebbi": ["Birnin Kebbi", "Sokoto", "Jega", "Yauri"],
+    "Niger": ["Minna", "Suleja", "Bida", "Kontagora"],
+    "Zamfara": ["Gusau", "Tsafe", "Bungudu", "Kaura Namoda"],
+    "Anambra": ["Awka", "Onitsha", "Nnewi", "Ekwulobia"],
+    "Enugu": ["Enugu North", "Enugu South", "Nsukka", "Udi"],
+    "Oyo": ["Ibadan", "Ogbomosho", "Iseyin", "Oyo"],
+    "Osun": ["Osogbo", "Ilesa", "Ife", "Iwo"],
+    "Ondo": ["Akure", "Ondo", "Owo", "Ikare"],
+    "Ekiti": ["Ado-Ekiti", "Ikere-Ekiti", "Ode-Ekiti", "Ilorin"],
+    "Delta": ["Warri", "Asaba", "Sapele", "Agbor"],
+    "Edo": ["Benin City", "Uromi", "Auchi", "Ikpoba Hill"],
+    "Imo": ["Owerri", "Okigwe", "Orlu", "Mgbidi"],
+    "Taraaba": ["Jalingo", "Wukari", "Bali", "Zing"],
+    "Rivers": ["Port Harcourt", "Obio-Akpor", "Eleme"],
+};
+
 const SignUp = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +57,9 @@ const SignUp = () => {
         setIsLoading(true);
         signupMutation.mutate(values, {
             onSuccess: (response) => {
-                toast.success("Sign up successful");
+                toast.success("Sign up successful", response
+                    ?.message
+                );
                 navigate("/otppage");
                 setIsLoading(false);
                 setSubmitting(false);
@@ -62,42 +93,83 @@ const SignUp = () => {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ isSubmitting }) => (
+                    {({ values, isSubmitting, setFieldValue }) => (
                         <Form className="space-y-4">
                             <Field type="text" name="firstname" placeholder="First Name" className="w-full p-2 bg-gray-200 rounded" />
-                            <Field type="email" name="email" placeholder="Email" className="w-full p-2 bg-gray-200 rounded" />
-                            <Field type="text" name="phone" placeholder="+234" className="w-full p-2 bg-gray-200 rounded" />
+                            <ErrorMessage name="firstname" component="div" className="text-red-500 text-sm" />
 
+                            <Field type="email" name="email" placeholder="Email" className="w-full p-2 bg-gray-200 rounded" />
+                            <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
+
+                            <Field type="text" name="phone" placeholder="+234" className="w-full p-2 bg-gray-200 rounded" />
+                            <ErrorMessage name="phone" component="div" className="text-red-500 text-sm" />
+
+                            {/* State and City Dropdowns */}
                             <div className="flex space-x-2">
-                                <Field as="select" name="state" className="w-1/2 p-2 bg-gray-200 rounded">
-                                    <option value="">State</option>
-                                    {/* Add state options here */}
+                                <Field
+                                    as="select"
+                                    name="state"
+                                    className="w-1/2 p-2 bg-gray-200 rounded"
+                                    onChange={(e) => {
+                                        setFieldValue("state", e.target.value);
+                                        setFieldValue("city", ""); // Reset city when state changes
+                                    }}
+                                >
+                                    <option value="">Select State</option>
+                                    {Object.keys(nigerianStates).map((state) => (
+                                        <option key={state} value={state}>{state}</option>
+                                    ))}
                                 </Field>
+                                <ErrorMessage name="state" component="div" className="text-red-500 text-sm" />
+
                                 <Field as="select" name="city" className="w-1/2 p-2 bg-gray-200 rounded">
-                                    <option value="">City</option>
-                                    {/* Add city options here */}
+                                    <option value="">Select City</option>
+                                    {values.state &&
+                                        nigerianStates[values.state]?.map((city: any) => (
+                                            <option key={city} value={city}>{city}</option>
+                                        ))}
                                 </Field>
+                                <ErrorMessage name="city" component="div" className="text-red-500 text-sm" />
                             </div>
 
-                            <Field type="date" name="dob" placeholder="Date of Birth" className="w-full p-2 bg-gray-200 rounded" />
+                            <Field type="date" name="dob" className="w-full p-2 bg-gray-200 rounded" />
+                            <ErrorMessage name="dob" component="div" className="text-red-500 text-sm" />
 
+                            {/* Gender and Degree */}
                             <div className="flex space-x-2">
                                 <Field as="select" name="gender" className="w-1/2 p-2 bg-gray-200 rounded">
-                                    <option value="">Gender</option>
+                                    <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </Field>
+                                <ErrorMessage name="gender" component="div" className="text-red-500 text-sm" />
+
                                 <Field as="select" name="degree" className="w-1/2 p-2 bg-gray-200 rounded">
-                                    <option value="">Degree</option>
-                                    {/* Add degree options here */}
+                                    <option value="">Select Degree</option>
+                                    <option value="NCE">NCE</option>
+                                    <option value="BSc">BSc</option>
+                                    <option value="MSc">MSc</option>
+                                    <option value="PhD">PhD</option>
                                 </Field>
+                                <ErrorMessage name="degree" component="div" className="text-red-500 text-sm" />
                             </div>
 
                             <Field type="password" name="password" placeholder="Password" className="w-full p-2 bg-gray-200 rounded" />
-                            <Field type="password" name="confirm_password" placeholder="Confirm Password" className="w-full p-2 bg-gray-200 rounded" />
+                            <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
 
-                            <button type="submit" disabled={isSubmitting || isLoading} className="w-full p-2 bg-green-500 text-white font-bold rounded">
-                                {isLoading ? "Loading..." : "Sign Up"}
+                            <Field type="password" name="confirm_password" placeholder="Confirm Password" className="w-full p-2 bg-gray-200 rounded" />
+                            <ErrorMessage name="confirm_password" component="div" className="text-red-500 text-sm" />
+
+                            <button
+                                type="submit"
+                                disabled={isSubmitting || isLoading}
+                                className="w-full p-2 bg-green-500 text-white font-bold rounded"
+                            >
+                                {isLoading || isSubmitting ? (
+                                    <span className="loading loading-spinner"></span>
+                                ) : (
+                                    "Sign Up"
+                                )}
                             </button>
                         </Form>
                     )}
