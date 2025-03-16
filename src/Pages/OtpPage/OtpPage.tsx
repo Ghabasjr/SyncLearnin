@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const OtpSchema = Yup.object().shape({
     otp: Yup.array()
@@ -13,7 +13,25 @@ const OtpPage = () => {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
+    // Determine OTP type from route (registration or forgot password)
+    const isForgotPassword = location.pathname.includes("forgot-password");
+
+    const handleOtpVerification = (values: { otp: string[] }) => {
+        setLoading(true);
+        const otpCode = values.otp.join("");
+
+        setTimeout(() => {
+            console.log(`OTP Submitted (${isForgotPassword ? "Forgot Password" : "Registration"}):`, otpCode);
+            setLoading(false);
+            if (isForgotPassword) {
+                navigate("/reset-password");
+            } else {
+                navigate("/dashboard");
+            }
+        }, 2000); // Simulate API call
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
@@ -21,20 +39,15 @@ const OtpPage = () => {
             <img src="/Group 1464.png" alt="Email OTP" className="w-32 mb-6" />
 
             {/* OTP Heading */}
-            <h1 className="text-2xl font-semibold mb-4">Enter OTP</h1>
+            <h1 className="text-2xl font-semibold mb-4">
+                {isForgotPassword ? "Reset Password OTP" : "Enter OTP"}
+            </h1>
 
             {/* Formik Form */}
             <Formik
                 initialValues={{ otp: ["", "", "", "", "", ""] }}
                 validationSchema={OtpSchema}
-                onSubmit={(values) => {
-                    setLoading(true);
-                    setTimeout(() => {
-                        console.log("OTP Submitted:", values.otp.join(""));
-                        setLoading(false);
-                        navigate("/dashboard");
-                    }, 2000); // Simulate API call
-                }}
+                onSubmit={handleOtpVerification}
             >
                 {({ values, setFieldValue }) => {
                     const isButtonDisabled = values.otp.some((val) => val === "");

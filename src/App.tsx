@@ -8,6 +8,7 @@ import DashBoard from './Pages/DashBoard/DashBoard'
 import Login from './Pages/Login'
 import ForgotPassword from './Pages/ForgotPassword'
 import { AuthProvider } from './Context/AuthContext/AuthContext'
+import TeacherSign from './Pages/TeacherSign'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             <Route path='/otppage' element={<OtpPage />} />
             <Route path='/dashboard' element={<DashBoard />} />
             <Route path='/forgotpassword' element={<ForgotPassword />} />
+            <Route path='/teachersign' element={<TeacherSign />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

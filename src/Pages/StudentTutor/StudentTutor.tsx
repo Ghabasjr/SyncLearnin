@@ -7,6 +7,9 @@ const StudentTutor = () => {
     const handleStudent = () => {
         navigate('/signup')
     };
+    const handleTutor = () => {
+        navigate('/teachersign')
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
@@ -37,7 +40,7 @@ const StudentTutor = () => {
                     whileInView={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
                     className="w-64 h-44 bg-[url('/Tutorpic.svg')] bg-cover bg-center rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center"
-                    onClick={handleStudent}
+                    onClick={handleTutor}
                 >
                     <p className="text-xl text-white font-semibold">Tutor</p>
                 </motion.div>
