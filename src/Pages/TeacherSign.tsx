@@ -31,6 +31,16 @@ const nigerianStates = {
     "Edo": ["Benin City", "Uromi", "Auchi", "Ikpoba Hill"],
     "Imo": ["Owerri", "Okigwe", "Orlu", "Mgbidi"],
     "Taraaba": ["Jalingo", "Wukari", "Bali", "Zing"],
+    "Cross River": ["Calabar", "Ogoja", "Ikom", "Obudu"],
+    "Akwa Ibom": ["Uyo", "Ikot Ekpene", "Eket", "Oron"],
+    "Kogi": ["Lokoja", "Okene", "Idah", "Kabba"],
+    "Benue": ["Makurdi", "Gboko", "Otukpo", "Katsina-Ala"],
+    "Plateau": ["Jos", "Bukuru", "Pankshin", "Langtang"],
+    "Nasarawa": ["Lafia", "Keffi", "Akwanga", "Nasarawa"],
+    "Kwara": ["Ilorin", "Offa", "Jebba", "Lafiagi"],
+    "Bayelsa": ["Yenagoa", "Ogbia", "Brass", "Sagbama"],
+    "Ebonyi": ["Abakaliki", "Afikpo", "Onueke", "Ishieke"],
+    "Gombe": ["Gombe", "Kumo", "Dukku", "Nafada"],
     "Rivers": ["Port Harcourt", "Obio-Akpor", "Eleme"],
 };
 
