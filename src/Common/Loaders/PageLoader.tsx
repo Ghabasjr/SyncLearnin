@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
-import { usePageLoader } from "../../../contexts/PageLoaderContext/PageLoaderProvider";
+import { usePageLoader } from "../../Context/PageLoaderContext/PageLoaderProvider/PageLoaderProvider";
 import "./pageloader.css";
 
 // PageLoader component

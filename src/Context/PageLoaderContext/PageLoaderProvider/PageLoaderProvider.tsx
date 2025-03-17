@@ -5,25 +5,39 @@ import React, {
   useContext,
   useEffect,
   useState,
+  ReactNode,
 } from "react";
 import { useLocation } from "react-router-dom";
 
-// Create PageLoaderContext
-const PageLoaderContext = createContext();
+// Define context type
+interface PageLoaderContextType {
+  show: boolean;
+  loading: boolean;
+  updateShow: (newShowState: boolean) => void;
+}
+
+// Create PageLoaderContext with default values
+const PageLoaderContext = createContext<PageLoaderContextType | undefined>(
+  undefined
+);
+
+// Define provider props type
+interface PageLoaderProviderProps {
+  children: ReactNode;
+}
 
 // PageLoaderProvider component
-// eslint-disable-next-line react/prop-types
-export const PageLoaderProvider = ({ children }) => {
+export const PageLoaderProvider: React.FC<PageLoaderProviderProps> = ({
+  children,
+}) => {
   const location = useLocation();
-  const [show, setShow] = useState(true); // Initially show loader
-  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState<boolean>(true); // Initially show loader
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // Ensure loader shows immediately on route change
   useEffect(() => {
     setLoading(true); // Trigger loading on route change
     setShow(true); // Show the loader immediately
 
-    // Simulate loading completion (data fetching or process) after some delay
     const timer = setTimeout(() => {
       setShow(false); // Hide loader after timeout (adjust as needed)
       setLoading(false); // Set loading to false after the simulated delay
@@ -32,7 +46,9 @@ export const PageLoaderProvider = ({ children }) => {
     return () => clearTimeout(timer); // Cleanup timeout on component unmount
   }, [location.pathname]);
 
-  const updateShow = useCallback((newShowState) => setShow(newShowState), []);
+  const updateShow = useCallback((newShowState: boolean) => {
+    setShow(newShowState);
+  }, []);
 
   return (
     <PageLoaderContext.Provider value={{ show, updateShow, loading }}>
@@ -42,8 +58,7 @@ export const PageLoaderProvider = ({ children }) => {
 };
 
 // Custom hook to use PageLoaderContext
-// eslint-disable-next-line react-refresh/only-export-components
-export const usePageLoader = () => {
+export const usePageLoader = (): PageLoaderContextType => {
   const context = useContext(PageLoaderContext);
   if (!context) {
     throw new Error("usePageLoader must be used within a PageLoaderProvider");
