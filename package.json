@@ -24,6 +24,7 @@
     "react-scripts": "^5.0.1",
     "react-toastify": "^11.0.5",
     "rimraf": "^6.0.1",
+    "typescipt": "^1.0.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
