@@ -35,25 +35,27 @@ const LandingPage = () => {
             </div>
 
             {/* Course Section */}
-            <section className="flex flex-col md:flex-row p-8 mt-8 space-x-4 space-y-4 items-center justify-center">
+            <section className="flex flex-col md:flex-row p-6 md:p-8 mt-6 md:mt-8 gap-4 items-center justify-center text-center">
                 <motion.h1
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1 }}
-                    className="text-4xl md:text-5xl font-semibold text-center text-gray-800">
+                    className="text-3xl md:text-5xl font-semibold text-gray-800">
                     Browse Our Best Courses
                 </motion.h1>
+
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1 }}
-                    className=" flex flex-col md:flex-row space-x-4 items-center justify-center">
+                    className="flex flex-col md:flex-row gap-4 items-center justify-center">
 
-                    <img className='w-[200px] h-[200px]' src="/Group 1471.png" alt="calculus logo" />
-                    <img className='w-[200px] h-[200px]' src="/Group 1474.png" alt="Linear Algebra" />
-                    <img className='w-[200px] h-[200px]' src="/Group 1472.png" alt="cyber security" />
+                    <img className="max-w-[150px] md:max-w-[200px] h-auto" src="/Group 1471.png" alt="calculus logo" />
+                    <img className="max-w-[150px] md:max-w-[200px] h-auto" src="/Group 1474.png" alt="Linear Algebra" />
+                    <img className="max-w-[150px] md:max-w-[200px] h-auto" src="/Group 1472.png" alt="cyber security" />
                 </motion.div>
             </section>
+
 
             {/* Why Choose Us Section */}
             <section className="py-12 px-6 md:px-12">
