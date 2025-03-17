@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useSignUpMutation } from "../../api/use-auth";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -131,6 +131,7 @@ const SignUp = () => {
                     <p className="text-base md:text-lg leading-relaxed">Take charge of your future with courses designed to help students succeed! Whether you're preparing for exams, exploring new subjects, or building skills for your dream career, our expert-led programs make learning engaging and effective. <br />Start today and unlock endless opportunities!</p>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
