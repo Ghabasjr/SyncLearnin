@@ -25,19 +25,24 @@ const Login = () => {
         setIsLoading(true);
         loginMutation.mutate(values, {
             onSuccess: (response) => {
-                console.log("Login successful:", response);
-                if (response?.success && response?.message === "Login successful") {
-                    toast.success(response?.message);
+                console.log("Login response:", response);
+
+                // Check if response.status is 200 before navigating
+                if (response?.status === 200) {
+                    toast.success("Login successful!");
+
+                    // Store token and user details in sessionStorage
                     sessionStorage.setItem("token", response?.data?.token);
-                    sessionStorage.setItem("user",
-                        JSON.stringify(response?.data?.user));
+                    sessionStorage.setItem("user", JSON.stringify(response?.data?.user));
+
+                    // Navigate to Dashboard
                     navigate("/dashboard");
                 } else {
                     toast.error(response?.message || "Login failed");
                 }
             },
             onError: (error) => {
-                console.error("Login failed:", error);
+                console.error("Login error:", error);
                 toast.error("Login failed. Please check your credentials.");
             },
             onSettled: () => {

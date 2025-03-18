@@ -36,7 +36,7 @@ const SignUp = () => {
         signupMutation.mutate(values, {
             onSuccess: (response) => {
                 toast.success("Sign up successful", response?.data?.message);
-                navigate("/otppage");
+                navigate("/otppage", { state: { email: values.email } });
                 setIsLoading(false);
                 setSubmitting(false);
             },

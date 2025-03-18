@@ -31,6 +31,14 @@ export const authService = {
     },
 
 
+    resendOtp: async (payload: any) => {
+        try {
+            const response = await fetchAuthWrapper.post("/resend_otp/", payload);
+            return response;
+        } catch (error) {
+            // console.log(error, "error");
+        }
+    },
 
     forgotPassword: async (payload: any) => {
         try {

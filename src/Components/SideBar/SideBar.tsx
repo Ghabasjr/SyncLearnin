@@ -1,4 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 const SideBar = () => {
+    const navigate = useNavigate();
+
+
+
+    const handleLogout = () => {
+        navigate("/login");
+        console.log("Logging out...");
+    };
     return (
         <div className="fixed left-0 top-14 h-full w-16 md:w-64 bg-gray-200 shadow-lg flex flex-col p-6 transition-all duration-300">
             {/* Sidebar Items */}
@@ -18,7 +28,7 @@ const SideBar = () => {
             </div>
 
             {/* Logout Button (Now Visible) */}
-            <div className="mb-20 flex items-center space-x-3 text-red-600 text-xl cursor-pointer hover:text-red-500">
+            <div onClick={handleLogout} className="mb-20 flex items-center space-x-3 text-red-600 text-xl cursor-pointer hover:text-red-500">
                 <img src="/undefined.svg" alt="Log Out" className="w-6 h-6" />
                 <span className="hidden md:block">Logout</span>
             </div>

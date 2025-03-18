@@ -1,70 +1,73 @@
-import React, { useRef, useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useEffect, useRef, useState } from "react";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useVerifyEmailMutation } from "../../api/use-auth";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const OtpSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email address").required("Email is required"),
     otp: Yup.array()
-        .of(Yup.string().matches(/\d$/, "Must be a number").required("Required"))
+        .of(Yup.string().matches(/^\d$/, "Must be a number").required("Required"))
         .length(6, "OTP must be exactly 6 digits"),
 });
 
 const OtpPage = () => {
-    const inputRefs = useRef([]);
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const verifyEmail = useVerifyEmailMutation();
 
-    const isForgotPassword = location.pathname.includes("forgot-password");
+    // Retrieve email from location.state
+    const email = location.state?.email || "";
 
-    const handleOtpVerification = (values: any) => {
+    useEffect(() => {
+        if (!email) {
+            toast.error("No email provided. Redirecting...");
+            navigate("/enter-email"); // Redirect if email is missing
+        }
+    }, [email, navigate]);
+
+    const handleOtpVerification = (values: { otp: string[] }) => {
         setLoading(true);
-        verifyEmail.mutate(values, {
-            onSuccess: (response) => {
-                console.log("OTP verified:", response);
-                if (response?.success && response?.message === "OTP verified") {
-                    toast.success(response?.message);
-                    navigate("/reset-password");
-                } else {
-                    toast.error(response?.message || "OTP verification failed");
-                }
-            },
-            onError: (error) => {
-                console.error("OTP verification failed:", error);
-                toast.error("OTP verification failed. Please check your OTP.");
-            },
-            onSettled: () => setLoading(false),
-        });
+        const otpCode = values.otp.join("");
+
+        verifyEmail.mutate(
+            { email, code: otpCode },
+            {
+                onSuccess: (response) => {
+                    toast.success(response?.message || "OTP verified successfully");
+                    navigate("/dashboard");
+                },
+                onError: () => {
+                    toast.error("OTP verification failed. Please check your OTP.");
+                },
+                onSettled: () => setLoading(false),
+            }
+        );
     };
+
+    if (!email) return null; // Prevent rendering if redirect is about to happen
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
             <img src="/Group 1464.png" alt="Email OTP" className="w-32 mb-6" />
-            <h1 className="text-2xl font-semibold mb-4">
-                {isForgotPassword ? "Reset Password OTP" : "Enter OTP"}
-            </h1>
+            <h1 className="text-2xl font-semibold mb-4">Enter OTP</h1>
             <Formik
-                initialValues={{ email: "", otp: ["", "", "", "", "", ""] }}
+                initialValues={{ otp: ["", "", "", "", "", ""] }}
                 validationSchema={OtpSchema}
                 onSubmit={handleOtpVerification}
             >
                 {({ values, setFieldValue }) => {
                     const isButtonDisabled = values.otp.some((val) => val === "");
+
                     return (
                         <Form className="flex flex-col items-center">
-                            <div className="mb-4 w-full max-w-md">
-                                <Field
-                                    type="email"
-                                    name="email"
-                                    placeholder="Enter your email"
-                                    className="input input-bordered w-full p-2"
-                                />
-                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
+                            {/* Hidden email field */}
+                            <Field type="hidden" name="email" value={email} />
+
                             <div className="flex space-x-2 mb-2">
                                 {values.otp.map((_, index) => (
                                     <Field
@@ -73,8 +76,8 @@ const OtpPage = () => {
                                         name={`otp[${index}]`}
                                         maxLength="1"
                                         className="input input-bordered w-10 h-10 text-center text-lg"
-                                        innerRef={(el) => (inputRefs.current[index] = el)}
-                                        onChange={(e) => {
+                                        innerRef={(el: HTMLInputElement | null) => (inputRefs.current[index] = el)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             const { value } = e.target;
                                             if (/^\d?$/.test(value)) {
                                                 setFieldValue(`otp[${index}]`, value);
@@ -83,7 +86,7 @@ const OtpPage = () => {
                                                 }
                                             }
                                         }}
-                                        onKeyDown={(e) => {
+                                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                             if (e.key === "Backspace" && !values.otp[index] && index > 0) {
                                                 inputRefs.current[index - 1]?.focus();
                                             }
@@ -102,6 +105,7 @@ const OtpPage = () => {
                     );
                 }}
             </Formik>
+            <ToastContainer />
         </div>
     );
 };

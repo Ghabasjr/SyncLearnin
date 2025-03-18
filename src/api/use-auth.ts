@@ -21,6 +21,16 @@ export const useVerifyEmailMutation = () => {
     });
 };
 
+
+export const useResendOtp = () => {
+    return useMutation({
+        mutationFn: async (data: { _type?: string;[key: string]: any }) => {
+            const { _type, ...rest } = data;
+            return (await authService.resendOtp(rest))?.data;
+        },
+    });
+};
+
 export const useSignUpMutation = () => {
     return useMutation({
         mutationFn: async (data: { _type?: string;[key: string]: any }) => {
