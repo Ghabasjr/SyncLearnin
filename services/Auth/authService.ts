@@ -58,9 +58,9 @@ export const authService = {
         }
     },
 
-    updateUserProfile: async (userId: any, monoId: any) => {
+    updateProfile: async (userId: any, monoId: any) => {
         try {
-            const response = await fetchAuthWrapper.put(`/update-profile/${userId}/`, monoId);
+            const response = await fetchAuthWrapper.put(`/update-profile/`, monoId);
             return response;
         } catch (error) {
             // console.log(error, "error");

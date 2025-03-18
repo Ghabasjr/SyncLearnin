@@ -8,7 +8,7 @@ const DashBoard = () => {
 
     useEffect(() => {
         // Fetch user role from localStorage or API (Modify as needed)
-        const userRole = localStorage.getItem("userRole");
+        const userRole = sessionStorage.getItem("userRole");
         setRole(userRole);
     }, []);
 

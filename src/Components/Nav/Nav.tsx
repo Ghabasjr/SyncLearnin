@@ -2,12 +2,13 @@
 
 
 const Nav = () => {
+    const user = sessionStorage.getItem("user");
 
     return (
         <header className="bg-gray-200 px-6 py-2 shadow-md">
             <nav className="flex items-center justify-between">
                 {/* Left: Welcome Message */}
-                <h1 className="text-lg font-semibold">Welcome back, Khalid</h1>
+                <h1 className="text-lg font-semibold">Welcome back, {user}</h1>
 
                 {/* Center: Search & Notification Icons */}
                 <div className="flex items-center space-x-4">

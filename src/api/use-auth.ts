@@ -58,11 +58,11 @@ export const useForgotPasswordMutation = () => {
     });
 };
 
-export const useUpdateUserProfiledMutation = () => {
+export const useUpdateProfileMutation = () => {
     const { data }: any = useUserProfile();
     return useMutation({
         mutationFn: async (monoUserId: any) =>
-            (await authService.updateUserProfile(data?.id, monoUserId))?.data,
+            (await authService.updateProfile(data?.id, monoUserId))?.data,
     });
 };
 

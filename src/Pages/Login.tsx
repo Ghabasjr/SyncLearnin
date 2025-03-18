@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useLoginMutation } from "../api/use-auth";
 
 const Login = () => {
@@ -24,15 +25,13 @@ const Login = () => {
     const handleSubmit = (values: any, { setSubmitting }) => {
         setIsLoading(true);
         loginMutation.mutate(values, {
-            onSuccess: (response) => {
+            onSuccess: (response: any) => {
                 console.log("Login response:", response);
+                toast.success("Login successful", response?.data?.msg);
 
                 // Check if response.status is 200 before navigating
                 if (response?.status === 200) {
-                    toast.success("Login successful!");
-
-                    // Store token and user details in sessionStorage
-                    sessionStorage.setItem("token", response?.data?.token);
+                    sessionStorage.setItem("token", response?.token);
                     sessionStorage.setItem("user", JSON.stringify(response?.data?.user));
 
                     // Navigate to Dashboard
