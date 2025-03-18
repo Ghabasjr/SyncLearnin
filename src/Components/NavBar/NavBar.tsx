@@ -11,7 +11,7 @@ const NavBar = () => {
     };
 
     const handleLogin = () => {
-        navigate("/studenttutor");
+        navigate("/login");
     };
 
     return (
