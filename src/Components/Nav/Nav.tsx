@@ -8,6 +8,7 @@ const Nav = () => {
         <header className="bg-gray-200 px-6 py-2 shadow-md">
             <nav className="flex items-center justify-between">
                 {/* Left: Welcome Message */}
+                <img className="w-10 cursor-pointer" src="/Group 1517.png" alt="SyncLogo" />
                 <h1 className="text-lg font-semibold">Welcome back, {user}</h1>
 
                 {/* Center: Search & Notification Icons */}

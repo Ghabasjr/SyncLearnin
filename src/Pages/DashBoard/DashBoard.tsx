@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Nav from "../../Components/Nav/Nav";
 import SideBar from "../../Components/SideBar/SideBar";
 import TeacherDashboard from "../../Components/TeacherDashboard"
@@ -17,6 +17,7 @@ const DashBoard = () => {
             <Nav />
             <SideBar />
             {role === "teacher" ? <TeacherDashboard /> : null}
+
         </div>
     );
 };

@@ -13,6 +13,8 @@ import { PageLoaderProvider } from './Context/PageLoaderContext/PageLoaderProvid
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PageLoader from './Common/Loaders/PageLoader'
+import TeacherDash from "./Pages/TeacherDash"
+import TestScreen from './Pages/TestScreen';
 
 function App() {
 
@@ -31,6 +33,8 @@ function App() {
               <Route path='/dashboard' element={<DashBoard />} />
               <Route path='/forgotpassword' element={<ForgotPassword />} />
               <Route path='/teachersign' element={<TeacherSign />} />
+              <Route path='/teacherdash' element={<TeacherDash />} />
+              <Route path='/testscreen' element={<TestScreen />} />
             </Routes>
             <ToastContainer />
             <PageLoader />

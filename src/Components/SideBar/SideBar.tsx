@@ -17,6 +17,7 @@ const SideBar = () => {
                     { src: "Home - 192x192.svg", label: "Dashboard" },
                     { src: "/Group 1386.svg", label: "Courses" },
                     { src: "Vector (3).svg", label: "Explore" },
+                    { src: "Vector (4).svg", label: "Chats" },
                     { src: "Group 1387.svg", label: "Profile" },
                     { src: "Vector (2).svg", label: "Settings" },
                 ].map((item, index) => (
