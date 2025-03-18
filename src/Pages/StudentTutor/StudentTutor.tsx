@@ -5,10 +5,10 @@ const StudentTutor = () => {
     const navigate = useNavigate();
 
     const handleStudent = () => {
-        navigate('/signup')
+        navigate('/signup');
     };
     const handleTutor = () => {
-        navigate('/teachersign')
+        navigate('/signup');
     };
 
     return (
@@ -28,10 +28,13 @@ const StudentTutor = () => {
                     initial={{ x: -50, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="w-64 h-44 bg-[url('/body.svg')] bg-cover bg-center rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center"
+                    className="w-64 h-44 bg-[url('/body.svg')] bg-cover bg-center rounded-lg shadow-md hover:shadow-lg cursor-pointer relative overflow-hidden"
                     onClick={handleStudent}
                 >
-                    <p className="text-xl text-white font-semibold">Student</p>
+                    {/* Overlay for Text */}
+                    <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-center py-2">
+                        <p className="text-lg font-semibold">Student</p>
+                    </div>
                 </motion.div>
 
                 {/* Tutor Option */}
@@ -39,10 +42,13 @@ const StudentTutor = () => {
                     initial={{ x: 50, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="w-64 h-44 bg-[url('/Tutorpic.svg')] bg-cover bg-center rounded-lg shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center"
+                    className="w-64 h-44 bg-[url('/Tutorpic.svg')] bg-cover bg-center rounded-lg shadow-md hover:shadow-lg cursor-pointer relative overflow-hidden"
                     onClick={handleTutor}
                 >
-                    <p className="text-xl text-white font-semibold">Tutor</p>
+                    {/* Overlay for Text */}
+                    <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-center py-2">
+                        <p className="text-lg font-semibold">Tutor</p>
+                    </div>
                 </motion.div>
             </div>
         </div>

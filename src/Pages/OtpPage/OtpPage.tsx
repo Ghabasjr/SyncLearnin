@@ -1,60 +1,70 @@
 import React, { useRef, useState } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useVerifyEmailMutation } from "../../api/use-auth";
+import { toast } from "react-toastify";
 
 const OtpSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email address").required("Email is required"),
     otp: Yup.array()
-        .of(Yup.string().matches(/^\d$/, "Must be a number").required("Required"))
+        .of(Yup.string().matches(/\d$/, "Must be a number").required("Required"))
         .length(6, "OTP must be exactly 6 digits"),
 });
 
 const OtpPage = () => {
-    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const inputRefs = useRef([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const verifyEmail = useVerifyEmailMutation();
 
-    // Determine OTP type from route (registration or forgot password)
     const isForgotPassword = location.pathname.includes("forgot-password");
 
-    const handleOtpVerification = (values: { otp: string[] }) => {
+    const handleOtpVerification = (values: any) => {
         setLoading(true);
-        const otpCode = values.otp.join("");
-
-        setTimeout(() => {
-            console.log(`OTP Submitted (${isForgotPassword ? "Forgot Password" : "Registration"}):`, otpCode);
-            setLoading(false);
-            if (isForgotPassword) {
-                navigate("/reset-password");
-            } else {
-                navigate("/dashboard");
-            }
-        }, 2000); // Simulate API call
+        verifyEmail.mutate(values, {
+            onSuccess: (response) => {
+                console.log("OTP verified:", response);
+                if (response?.success && response?.message === "OTP verified") {
+                    toast.success(response?.message);
+                    navigate("/reset-password");
+                } else {
+                    toast.error(response?.message || "OTP verification failed");
+                }
+            },
+            onError: (error) => {
+                console.error("OTP verification failed:", error);
+                toast.error("OTP verification failed. Please check your OTP.");
+            },
+            onSettled: () => setLoading(false),
+        });
     };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-            {/* Image */}
             <img src="/Group 1464.png" alt="Email OTP" className="w-32 mb-6" />
-
-            {/* OTP Heading */}
             <h1 className="text-2xl font-semibold mb-4">
                 {isForgotPassword ? "Reset Password OTP" : "Enter OTP"}
             </h1>
-
-            {/* Formik Form */}
             <Formik
-                initialValues={{ otp: ["", "", "", "", "", ""] }}
+                initialValues={{ email: "", otp: ["", "", "", "", "", ""] }}
                 validationSchema={OtpSchema}
                 onSubmit={handleOtpVerification}
             >
                 {({ values, setFieldValue }) => {
                     const isButtonDisabled = values.otp.some((val) => val === "");
-
                     return (
                         <Form className="flex flex-col items-center">
-                            {/* OTP Input Fields */}
+                            <div className="mb-4 w-full max-w-md">
+                                <Field
+                                    type="email"
+                                    name="email"
+                                    placeholder="Enter your email"
+                                    className="input input-bordered w-full p-2"
+                                />
+                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
                             <div className="flex space-x-2 mb-2">
                                 {values.otp.map((_, index) => (
                                     <Field
@@ -63,8 +73,8 @@ const OtpPage = () => {
                                         name={`otp[${index}]`}
                                         maxLength="1"
                                         className="input input-bordered w-10 h-10 text-center text-lg"
-                                        innerRef={(el: HTMLInputElement | null) => (inputRefs.current[index] = el)}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        innerRef={(el) => (inputRefs.current[index] = el)}
+                                        onChange={(e) => {
                                             const { value } = e.target;
                                             if (/^\d?$/.test(value)) {
                                                 setFieldValue(`otp[${index}]`, value);
@@ -73,7 +83,7 @@ const OtpPage = () => {
                                                 }
                                             }
                                         }}
-                                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                                        onKeyDown={(e) => {
                                             if (e.key === "Backspace" && !values.otp[index] && index > 0) {
                                                 inputRefs.current[index - 1]?.focus();
                                             }
@@ -81,8 +91,6 @@ const OtpPage = () => {
                                     />
                                 ))}
                             </div>
-
-                            {/* Verify Button with Loading Spinner */}
                             <button
                                 type="submit"
                                 className={`btn w-64 mt-4 ${isButtonDisabled ? "btn-disabled" : "btn-success"}`}

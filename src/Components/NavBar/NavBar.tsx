@@ -7,11 +7,11 @@ const NavBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const handleSignUp = () => {
-        navigate("/signup");
+        navigate("/studenttutor");
     };
 
     const handleLogin = () => {
-        navigate("/login");
+        navigate("/studenttutor");
     };
 
     return (
@@ -19,6 +19,7 @@ const NavBar = () => {
             <nav className="flex justify-between items-center max-w-6xl mx-auto p-4">
                 {/* Logo */}
                 <div className="flex items-center">
+                    <img className="cursor-pointer w-10" src="/Group 1517.png" alt="" />
                     <img className="cursor-pointer w-32" src="/SyncLearn.svg" alt="SyncLearn Logo" />
                 </div>
 

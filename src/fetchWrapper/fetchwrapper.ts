@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
-const BASE_URL = "https://localhost:5004/api/";
+const BASE_URL = "https://clevahack-server.onrender.com/api/";
 
 // Store all active controllers for request cancellation
 export const abortControllers: AbortController[] = [];

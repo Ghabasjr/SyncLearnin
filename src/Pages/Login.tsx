@@ -29,7 +29,8 @@ const Login = () => {
                 if (response?.success && response?.message === "Login successful") {
                     toast.success(response?.message);
                     sessionStorage.setItem("token", response?.data?.token);
-                    sessionStorage.setItem("user", JSON.stringify(response?.data?.user));
+                    sessionStorage.setItem("user",
+                        JSON.stringify(response?.data?.user));
                     navigate("/dashboard");
                 } else {
                     toast.error(response?.message || "Login failed");

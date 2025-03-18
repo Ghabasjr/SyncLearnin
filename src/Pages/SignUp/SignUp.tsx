@@ -10,14 +10,15 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const signupMutation = useSignUpMutation();
 
-    // Validation schema using Yup
     const validationSchema = Yup.object({
-        firstname: Yup.string().required("First name is required"),
-        lastname: Yup.string().required("Last name is required"),
-        phone: Yup.string()
+        fullname: Yup.string().required("Full name is required"),
+        phone_number: Yup.string()
             .matches(/^\d+$/, "Phone number must be numeric")
             .required("Phone number is required"),
         role: Yup.string().required("Role is required"),
+        level: Yup.string().required("Level is required"),
+        dob: Yup.date().required("Date of birth is required"),
+        location: Yup.string().required("Location is required"),
         email: Yup.string()
             .email("Invalid email address")
             .required("Email is required"),
@@ -30,15 +31,11 @@ const SignUp = () => {
             .oneOf([Yup.ref("password"), ""], "Passwords must match"),
     });
 
-    // Handle form submission
     const handleSubmit = async (values: any, { setSubmitting }) => {
         setIsLoading(true);
-
         signupMutation.mutate(values, {
             onSuccess: (response) => {
-                console.log("signup successful", response);
-                toast.success("Sign up successful", response?.message);
-                console.log("signup successful", response);
+                toast.success("Sign up successful", response?.data?.message);
                 navigate("/otppage");
                 setIsLoading(false);
                 setSubmitting(false);
@@ -51,18 +48,18 @@ const SignUp = () => {
         });
     };
 
-
     return (
-        <div className="flex flex-col md:flex-row min-h-screen w-full p-4">
-            <div className="w-1/2 h-full flex flex-col justify-center items-center p-10 bg-white ">
+        <div className="flex flex-col md:flex-row min-h-screen w-full ">
+            <div className="w-1/2 h-full flex flex-col justify-center items-center p-10 bg-white">
                 <h1 className="text-3xl font-semibold text-black mb-6">Sign Up</h1>
-
                 <Formik
                     initialValues={{
-                        firstname: "",
-                        lastname: "",
-                        phone: "",
+                        fullname: "",
+                        phone_number: "",
                         role: "",
+                        level: "",
+                        dob: "",
+                        location: "",
                         email: "",
                         gender: "",
                         password: "",
@@ -73,42 +70,40 @@ const SignUp = () => {
                 >
                     {({ isSubmitting }) => (
                         <Form className="w-full max-w-md space-y-4">
-                            <div>
-                                <Field type="text" name="firstname" placeholder="First Name" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="firstname" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field type="text" name="lastname" placeholder="Last Name" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="lastname" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field type="text" name="phone" placeholder="Phone Number" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="phone" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field type="text" name="role" placeholder="Role" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field type="email" name="email" placeholder="Email" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field as="select" name="gender" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </Field>
-                                <ErrorMessage name="gender" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field type="password" name="password" placeholder="Password" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
-                            <div>
-                                <Field type="password" name="confirm_password" placeholder="Confirm Password" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
-                                <ErrorMessage name="confirm_password" component="div" className="text-red-500 text-sm mt-1" />
-                            </div>
+                            <Field type="text" name="fullname" placeholder="Full Name" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="fullname" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="text" name="phone_number" placeholder="Phone Number" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="phone_number" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="text" name="role" placeholder="Role" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="text" name="level" placeholder="Level" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="level" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="date" name="dob" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="dob" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="text" name="location" placeholder="Location" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="location" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="email" name="email" placeholder="Email" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field as="select" name="gender" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </Field>
+                            <ErrorMessage name="gender" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="password" name="password" placeholder="Password" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+
+                            <Field type="password" name="confirm_password" placeholder="Confirm Password" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <ErrorMessage name="confirm_password" component="div" className="text-red-500 text-sm mt-1" />
+
                             <button type="submit" disabled={isSubmitting || isLoading} className="btn btn-success bg-[#23CE6B] w-full rounded-xl text-black flex justify-center items-center p-2">
                                 {isLoading ? <span className="loading loading-spinner"></span> : "Sign Up"}
                             </button>
@@ -116,21 +111,24 @@ const SignUp = () => {
                     )}
                 </Formik>
                 <div className="mt-4 text-center">
+                    <span className="text-gray-600">Already have an account? <a href="/login" className="text-green-600 font-semibold hover:underline">Log In</a></span>
+                </div>
+            </div>
+            {/* Hidden on mobile */}
+            <div className="hidden md:flex flex-col items-center justify-center bg-green-500 text-white p-6 rounded-lg shadow-lg">
+                <img src="/Group 1427.png" alt="Sign Up" className="w-3/4 h-auto object-cover mb-4" />
+                <div className="flex flex-col space-x-4 items-center justify-center">
 
-                    <span className="text-gray-600 mt-4 flex items-start justify-start">Already have an account?
-                        <a href="/login" className="text-green-600 font-semibold hover:underline">Log In</a>
-                    </span>
+                    <h1 className="text-2xl font-bold text-center mb-2 mt-8">
+                        Kick Start Your Learning Journey with Our Top Courses
+                    </h1>
+                    <p className="text-center text-lg leading-relaxed max-w-md">
+                        Boost your learning, ace your exams, and explore new skills—all in one place.
+                        Fun, engaging, and built for your success. Start now and shape your future!
+                    </p>
                 </div>
             </div>
-            <div className="hidden md:flex w-1/2 h-full flex-col justify-center items-center bg-[#23CE6B] p-10 text-white">
-                <div className="mb-6">
-                    <img src="Group 1427.png" alt="Learning logo" className="w-48 md:w-64" />
-                </div>
-                <div className="max-w-lg flex flex-col items-center space-y-6">
-                    <h1 className="text-2xl md:text-3xl font-bold">Kick-Start Your Learning Journey with Our Top Courses</h1>
-                    <p className="text-base md:text-lg leading-relaxed">Take charge of your future with courses designed to help students succeed! Whether you're preparing for exams, exploring new subjects, or building skills for your dream career, our expert-led programs make learning engaging and effective. <br />Start today and unlock endless opportunities!</p>
-                </div>
-            </div>
+
             <ToastContainer />
         </div>
     );

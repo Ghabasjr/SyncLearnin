@@ -14,7 +14,7 @@ const LandingPage = () => {
             {/* Hero Section */}
             <div className="bg-[url('/body.svg')] bg-cover bg-center bg-no-repeat h-screen flex flex-col">
                 <NavBar />
-                <div className="flex flex-col items-center justify-center h-full text-white text-6xl md:text-7xl font-semibold text-center px-4 mt-40">
+                <div className="flex flex-col items-center justify-center h-full text-white text-4xl md:text-5xl font-semibold text-center px-4 mt-96">
                     <motion.h1
                         initial={{ opacity: 0, y: -30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -106,7 +106,6 @@ const LandingPage = () => {
                         whileInView={{ x: 0, opacity: 1 }}
                         transition={{ duration: 1 }}
                         className="bg-white p-6 shadow-md rounded-lg text-center">
-                        <img src="unsplash_9dvb7vm6IS4.png" alt="Free & Accessible" className="mx-auto mb-4 w-24 h-24 object-cover" />
                         <h2 className="text-2xl font-bold">Free & Accessible</h2>
                         <p className="text-gray-600 mt-2">Education should be within reach for everyone! Our courses are free, with optional certifications.</p>
                     </motion.div>

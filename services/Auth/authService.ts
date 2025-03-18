@@ -18,9 +18,10 @@ export const authService = {
         }
     },
 
-    staffRegister: async (credentials: any) => {
+
+    verifyEmail: async (credentials: any) => {
         try {
-            const response = await fetchBaseWrapper.post("/register-invited-user/", credentials);
+            const response = await fetchBaseWrapper.post("/verify-email", credentials);
             // console.log("response", response);
             // sessionStorage.setItem("sctk", response?.data?.access);
             return response.data;
@@ -28,6 +29,8 @@ export const authService = {
             throw error;
         }
     },
+
+
 
     forgotPassword: async (payload: any) => {
         try {

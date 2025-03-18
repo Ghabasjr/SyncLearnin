@@ -11,11 +11,12 @@ export const useLoginMutation = () => {
     });
 };
 
-export const useStaffRegisterMutation = () => {
+
+export const useVerifyEmailMutation = () => {
     return useMutation({
         mutationFn: async (data: { _type?: string;[key: string]: any }) => {
             const { _type, ...rest } = data;
-            return (await authService.staffRegister(rest))?.data;
+            return (await authService.verifyEmail(rest))?.data;
         },
     });
 };
