@@ -35,6 +35,7 @@ const SignUp = () => {
         setIsLoading(true);
         signupMutation.mutate(values, {
             onSuccess: (response) => {
+                console.log("response", response)
                 toast.success("Sign up successful", response?.data?.message);
                 navigate("/otppage", { state: { email: values.email } });
                 setIsLoading(false);
@@ -50,7 +51,8 @@ const SignUp = () => {
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen w-full ">
-            <div className="w-1/2 h-full flex flex-col justify-center items-center p-10 bg-white">
+            {/* Left Side - Only Visible on Medium Screens & Up */}
+            <div className="w-full md:w-1/2 h-full flex flex-col justify-center items-center p-6 md:p-10 bg-white">
                 <h1 className="text-3xl font-semibold text-black mb-6">Sign Up</h1>
                 <Formik
                     initialValues={{
@@ -76,11 +78,22 @@ const SignUp = () => {
                             <Field type="text" name="phone_number" placeholder="Phone Number" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
                             <ErrorMessage name="phone_number" component="div" className="text-red-500 text-sm mt-1" />
 
-                            <Field type="text" name="role" placeholder="Role" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <Field as="select" name="role" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2">
+                                <option value="">Select Role</option>
+                                <option value="Student">Student</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Administrator">Administrator</option>
+                            </Field>
                             <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
 
-                            <Field type="text" name="level" placeholder="Level" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
+                            <Field as="select" name="level" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2">
+                                <option value="">Select Level</option>
+                                <option value="Beginner">Primary</option>
+                                <option value="Intermediate">Secondary</option>
+                                <option value="Advanced">Advanced</option>
+                            </Field>
                             <ErrorMessage name="level" component="div" className="text-red-500 text-sm mt-1" />
+
 
                             <Field type="date" name="dob" className="input input-bordered w-full bg-[#EAEAEA] rounded-xl p-2" />
                             <ErrorMessage name="dob" component="div" className="text-red-500 text-sm mt-1" />

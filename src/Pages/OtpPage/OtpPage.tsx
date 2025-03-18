@@ -39,7 +39,7 @@ const OtpPage = () => {
             {
                 onSuccess: (response) => {
                     toast.success(response?.message || "OTP verified successfully");
-                    navigate("/dashboard");
+                    navigate("/login");
                 },
                 onError: () => {
                     toast.error("OTP verification failed. Please check your OTP.");
