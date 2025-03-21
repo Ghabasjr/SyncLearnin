@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PageLoader from './Common/Loaders/PageLoader'
 import TeacherDash from "./Pages/TeacherDash"
 import TestScreen from './Pages/TestScreen';
+// import Chat from './Components/Chat';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
               <Route path='/teachersign' element={<TeacherSign />} />
               <Route path='/teacherdash' element={<TeacherDash />} />
               <Route path='/testscreen' element={<TestScreen />} />
+              {/* <Route path='/chat' element={<Chat />} /> */}
             </Routes>
             <ToastContainer />
             <PageLoader />

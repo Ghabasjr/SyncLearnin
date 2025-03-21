@@ -82,7 +82,7 @@ const SignUp = () => {
                                 <option value="">Select Role</option>
                                 <option value="Student">Student</option>
                                 <option value="Teacher">Teacher</option>
-                                <option value="Administrator">Administrator</option>
+                                {/* <option value="Administrator">Administrator</option> */}
                             </Field>
                             <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
 
