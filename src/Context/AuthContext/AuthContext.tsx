@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const sctk = sessionStorage.getItem("token") || "";
 
       // List of routes that do not require authentication
-      const publicRoutes = ["/", "/studenttutor", "/login", "/signup", "/about", "/contact", "/teachersign"];
+      const publicRoutes = ["/", "/studenttutor", "/login", "/signup", "/about", "/contact", "/teachersign", "/otppage"];
 
       // If the user is not authenticated and the current route is not public, redirect to login
       if (!sctk && !publicRoutes.includes(location.pathname)) {

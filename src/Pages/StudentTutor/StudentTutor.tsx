@@ -8,7 +8,7 @@ const StudentTutor = () => {
         navigate('/signup');
     };
     const handleTutor = () => {
-        navigate('/signup');
+        navigate('/teachersign');
     };
 
     return (
